@@ -4,6 +4,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
+
 #include </usr/include/linux/i2c-dev.h>
 
 #include <sys/types.h>
@@ -30,7 +31,7 @@
 #define BANK_A  0
 #define BANK_B  1
 
-class MCP23017/*{{{*/
+class MCP23017
 {
      public:
           int adapter ;
@@ -105,5 +106,5 @@ class MCP23017/*{{{*/
                return 0;
           }
 
-} ;/*}}}*/
+} ;
 
