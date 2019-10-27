@@ -38,10 +38,11 @@ class MCP23017
           int address ;
           int file;
 
-
-          MCP23017( int adapter, int address )
+          MCP23017( int adapter, int address )/*{{{*/
           {
                char filename[20];
+
+               this->address = address ;
 
                snprintf(filename, 19, "/dev/i2c-%d", adapter);
 
@@ -59,19 +60,18 @@ class MCP23017
                // out
                writeRegister( BANK_B, IODIR, 0x00 );
                writeRegister( BANK_B, GPPU, 0x00 );
-          }
+          }/*}}}*/
 
-
-          bool writeRegister( int bank, int reg, int value )
+          bool writeRegister( int bank, int reg, int value )/*{{{*/
           {
                char buf[2];
                buf[0] = reg + bank;
                buf[1] = value ;
 
                return write( file, buf, 2 ) == 2;
-          }
+          }/*}}}*/
 
-          int readRegister( int bank, int reg )
+          int readRegister( int bank, int reg )/*{{{*/
           {
                char buf[1];
                buf[0] = reg + bank;
@@ -83,28 +83,33 @@ class MCP23017
                read( file, buf, 1 ) ;
 
                return (int) buf[0] ;
-          }
+          }/*}}}*/
 
-          int poll()
+          int poll()/*{{{*/
           {
                int input ;
+               int byte[8]; 
                while(1)
                {
                     for ( int output = 0; output < PINS ; output++ )
                     {
-                         writeRegister( BANK_B, OLAT, pow(2,output) ); 
+                         writeRegister( BANK_B, OLAT, 255 - pow(2,output) ); 
 
-                         input = readRegister( BANK_A, GPIO );
+                         input = 255 - readRegister( BANK_A, GPIO );
 
-                         if ( input != 255 )
-                              printf( "Received : %i x %i \n", output, input ); 
+                         for ( int i = 0; i < 8 ; i++ )
+                              byte[i] = ( input & (int) pow( 2, i ) ) != 0 ;
+
+                         if ( input != 0 )
+                         {
+                              printf( "Received : %i %i %i %i %i %i %i %i %i %i  \n", this->address, output, byte[0], byte[1], byte[2], byte[3], byte[4], byte[5], byte[6], byte[7] ) ;
+                         }
                     }
-                    usleep(5000);
+                    usleep(50000);
                }
 
-
                return 0;
-          }
+          }/*}}}*/
 
 } ;
 
