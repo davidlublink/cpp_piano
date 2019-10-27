@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 
+#include <src/notes.c>
 #include </usr/include/linux/i2c-dev.h>
 
 #include <sys/types.h>
@@ -89,6 +90,9 @@ class MCP23017
           {
                int input ;
                int byte[8]; 
+
+               int button ;
+
                while(1)
                {
                     for ( int output = 0; output < PINS ; output++ )
@@ -98,12 +102,16 @@ class MCP23017
                          input = 255 - readRegister( BANK_A, GPIO );
 
                          for ( int i = 0; i < 8 ; i++ )
+                         {
                               byte[i] = ( input & (int) pow( 2, i ) ) != 0 ;
 
-                         if ( input != 0 )
-                         {
-                              printf( "Received : %i %i %i %i %i %i %i %i %i %i  \n", this->address, output, byte[0], byte[1], byte[2], byte[3], byte[4], byte[5], byte[6], byte[7] ) ;
+                              button = pow( 2, 10 + output ) + pow( 2, i ) ;
+
+
+                              if ( byte[i] > 0 ) 
+                                   printf( "Button %i %i => %i \n", this->address, button, byte[i] );
                          }
+
                     }
                     usleep(50000);
                }
