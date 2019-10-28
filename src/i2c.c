@@ -89,16 +89,46 @@ class MCP23017
                return (int) buf[0] ;
           }/*}}}*/
 
+          void activateSequentialMode()
+          {
+               writeRegister( BANK_B, IOCON, pow(2,7) ) ;
+               writeRegister( BANK_A, IOCON, pow(2,7) ) ;
+          }
+
+          int fastRead( )/*{{{*/
+          {
+               char buf[1];
+
+               read( file, buf, 1 ) ;
+
+               return (int) buf[0] ;
+          }/*}}}*/
+
+          bool fastWrite( int value )/*{{{*/
+          {
+               char buf[1];
+               buf[0] = value ;
+
+               return write( file, buf, 1 ) == 1;
+          }/*}}}*/
+
           int poll()/*{{{*/
           {
                Notes* notes = new Notes ;
 
-               while(1)
+               int i = 10000;
+
+               //activateSequentialMode();
+               // writeRegister( BANK_B, GPIO, 255 );
+
+               while( 1 || i-- > 0  )
                {
                     for ( int output = 0; output < PINS ; output++ )
                     {
+                         //fastWrite( 255 - pow( 2, output ) );
                          writeRegister( BANK_B, OLAT, 255 - pow(2,output) ); 
 
+                         //int raw = 255 - fastRead();
                          int raw = 255 - readRegister( BANK_A, GPIO );
 
                          for ( int input = 0; input < 8 ; input++ )

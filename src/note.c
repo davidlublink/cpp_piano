@@ -21,10 +21,14 @@ class Note
 
           int key ;
 
+          int first ;
+
      public:
 
           Note( int key, int upper_out, int upper_in, int lower_out, int lower_in  )/*{{{*/
           {
+               this->first = 0;
+
                this->upper[0] = upper_out ;
                this->upper[1] = upper_in ;
                this->lower[0] = lower_out ;
@@ -70,7 +74,11 @@ class Note
                {
                     this->value[0] = bit ;
 
-                    this->timer = this->getTime() ;
+                    if ( bit ) 
+                    {
+                         this->timer = this->getTime() ;
+                         printf("Charging time\n");
+                    }
                }
           }/*}}}*/
 
@@ -85,7 +93,8 @@ class Note
                          int force ;
                          if ( this->timer == 0 )
                          {
-                              force = 0;
+                              printf("Misfire!\n" ); 
+                              force = 127 ;
                          }
                          else
                          {
@@ -94,16 +103,18 @@ class Note
 
                               float diff = this->getTime() - this->timer; 
 
-                              force = max( 0, 127 - diff / 10e6 * 700 ) ;
+                              printf( "From %i to %i\n ", start, end );
 
+                              force = max( 0, 127 - diff / 10e6 * 700 ) ;
                          }
-                         printf( "noteon 1 %i %i\n", this->key, force );
+//                         printf( "noteon 1 %i %i\n", this->key, force );
                     }
                     else
-                         printf( "noteoff 1 %i \n", this->key ) ;
+  ;//                       printf( "noteoff 1 %i \n", this->key ) ;
 
 
                }
+               this->timer = 0;
           }/*}}}*/
 
 
