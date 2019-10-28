@@ -88,6 +88,7 @@ class MCP23017
 
           int poll()/*{{{*/
           {
+               Notes* notes = new Notes ;
 
                while(1)
                {
@@ -95,17 +96,13 @@ class MCP23017
                     {
                          writeRegister( BANK_B, OLAT, 255 - pow(2,output) ); 
 
-                         int input = 255 - readRegister( BANK_A, GPIO );
+                         int raw = 255 - readRegister( BANK_A, GPIO );
 
-                         for ( int i = 0; i < 8 ; i++ )
+                         for ( int input = 0; input < 8 ; input++ )
                          {
+                              int bit = ( raw & (int) pow( 2, input ) ) != 0 ;
 
-                              int word = output * 10 + i + 100 ;
-
-                              int bit = ( input & (int) pow( 2, i ) ) != 0 ;
-
-                              if ( bit > 0 ) 
-                                   printf( "Button %i %i => %i \n", this->address, word, bit );
+                              notes->set( output, input, bit );
                          }
 
                     }

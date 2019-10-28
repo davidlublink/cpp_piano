@@ -1,7 +1,4 @@
 #include <src/i2c.c>
-#include <src/note.c>
-
-
 
 int main() {
 
@@ -9,6 +6,14 @@ int main() {
 
 //     piano->load('keyboard.map');
 
-     piano->poll();
+     try
+     {
+          piano->poll();
+     }
+     catch( int e  )
+     {
+          printf("Failure : %i\n", e );
+
+     }
 
 }
