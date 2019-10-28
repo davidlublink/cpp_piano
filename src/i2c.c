@@ -107,9 +107,7 @@ class MCP23017
 
                               notes->set( output, input, bit );
                          }
-
                     }
-                    usleep(50000);
                }
 
                return 0;

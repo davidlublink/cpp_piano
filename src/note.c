@@ -2,6 +2,13 @@
 
 #define INVALID_VALUE 0x01
 
+#define usec 1000000
+
+#define max(a,b) \
+     ({ __typeof__ (a) _a = (a); \
+      __typeof__ (b) _b = (b); \
+      _a > _b ? _a : _b; })
+
 class Note 
 {
      private :
@@ -27,12 +34,23 @@ class Note
 
           }/*}}}*/
 
-          long getMicrotime()
+          long getTime()/*{{{*/
           {
                struct timeval currentTime;
+               int f = 1 ; 
+
                gettimeofday(&currentTime, NULL);
-               return currentTime.tv_sec * (int) 1e6 + currentTime.tv_usec;
-          }
+
+               int time = currentTime.tv_sec ;
+
+               int microtime =currentTime.tv_usec ;
+
+               time = ( time % 1000 ) * 10e5;
+
+               time = time + microtime;
+
+               return time; 
+          }/*}}}*/
 
           void set( int output, int input, int bit )/*{{{*/
           {
@@ -52,7 +70,7 @@ class Note
                {
                     this->value[0] = bit ;
 
-                    this->timer = this->getMicrotime();
+                    this->timer = this->getTime() ;
                }
           }/*}}}*/
 
@@ -63,14 +81,27 @@ class Note
                     this->value[1] = bit ;
 
                     if ( bit )
-                         printf( "noteon 1 %i %i\n", this->key, 100 );
+                    {
+                         int force ;
+                         if ( this->timer == 0 )
+                         {
+                              force = 0;
+                         }
+                         else
+                         {
+                              float start = this->timer;
+                              float end   = this->getTime();
+
+                              float diff = this->getTime() - this->timer; 
+
+                              force = max( 0, 127 - diff / 10e6 * 700 ) ;
+
+                         }
+                         printf( "noteon 1 %i %i\n", this->key, force );
+                    }
                     else
                          printf( "noteoff 1 %i \n", this->key ) ;
 
-
-                    long ts = this->getMicrotime() - this->timer ;
-
-                    // printf( "Took %i to press the key\n", this->timer ) ;
 
                }
           }/*}}}*/
