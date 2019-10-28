@@ -6,6 +6,10 @@ demo:
 	g++ -I. piano.c -o piano
 	./piano | nc $(SYNTH_IP) 9800
 
+test: 
+	g++ -I. piano.c -o piano
+	./piano 
+
 clean: 
 	$(RM) piano
 
