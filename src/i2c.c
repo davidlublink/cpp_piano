@@ -61,6 +61,9 @@ class MCP23017
                // out
                writeRegister( BANK_B, IODIR, 0x00 );
                writeRegister( BANK_B, GPPU, 0x00 );
+
+
+               setbuf(stdout, NULL);
           }/*}}}*/
 
           bool writeRegister( int bank, int reg, int value )/*{{{*/
