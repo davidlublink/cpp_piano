@@ -2,7 +2,7 @@ SYNTH_IP = "192.168.34.112"
 
 all: piano.c
 	g++ -I. piano.c -o piano
-test: 
+demo: 
 	g++ -I. piano.c -o piano
 	./piano | nc $(SYNTH_IP) 9800
 
