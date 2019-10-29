@@ -25,7 +25,7 @@ class Note
 
      public:
 
-          Note( int key, int upper_out, int upper_in, int lower_out, int lower_in  )/*{{{*/
+          Note( int key, int lower_out, int lower_in, int upper_out, int upper_in  )/*{{{*/
           {
                this->first = 0;
 
@@ -77,7 +77,7 @@ class Note
                     if ( bit ) 
                     {
                          this->timer = this->getTime() ;
-                         printf("Charging time\n");
+                         printf("%i Upper was pressed %i\n", this->key, this->getTime() ) ;
                     }
                }
           }/*}}}*/
@@ -93,7 +93,7 @@ class Note
                          int force ;
                          if ( this->timer == 0 )
                          {
-                              printf("Misfire!\n" ); 
+                              printf("%i, Lower was pressed %i!\n", this->key, this->getTime() ); 
                               force = 127 ;
                          }
                          else
