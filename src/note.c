@@ -2,6 +2,8 @@
 
 #define INVALID_VALUE 0x01
 
+#define TIME_UNIT 1000
+
 #define usec 1000000
 
 #define max(a,b) \
@@ -12,8 +14,8 @@
 class Note 
 {
      private :
-          int upper[2] ;
-          int lower[2] ;
+          int start[3] ;
+          int end[3] ;
 
           int value[2]; 
 
@@ -25,14 +27,16 @@ class Note
 
      public:
 
-          Note( int key, int lower_out, int lower_in, int upper_out, int upper_in  )/*{{{*/
+          Note( int key, int start_x, int start_y, int end_x, int end_y  )/*{{{*/
           {
                this->first = 0;
 
-               this->upper[0] = upper_out ;
-               this->upper[1] = upper_in ;
-               this->lower[0] = lower_out ;
-               this->lower[1] = lower_in ;
+               this->start[0] = start_x ;
+               this->start[1] = start_y ;
+
+               this->end[0] = end_x;
+               this->end[1] = end_y;
+
 
                this->key = key ;
 
@@ -56,12 +60,12 @@ class Note
                return time; 
           }/*}}}*/
 
-          void set( int output, int input, int bit )/*{{{*/
+          void set( int x, int y, int value )/*{{{*/
           {
-               if ( output == this->upper[0] && input == this->upper[1] )
-                    return this->setUpper( bit ) ;
-               else if ( output == this->lower[0] && input == this->lower[1] )
-                    return this->setLower( bit );
+               if ( x == this->start[0] && y == this->start[1] )
+                    return this->setUpper( value ) ;
+               else if ( x == this->end[0] && y == this->end[1] )
+                    return this->setLower( value );
                else
                     throw 0x03;
           }/*}}}*/
@@ -77,7 +81,10 @@ class Note
                     if ( bit ) 
                     {
                          this->timer = this->getTime() ;
-                         printf("%i Upper was pressed %i\n", this->key, this->getTime() ) ;
+                    }
+                    else
+                    {
+                         this->timer = 0;
                     }
                }
           }/*}}}*/
@@ -91,30 +98,33 @@ class Note
                     if ( bit )
                     {
                          int force ;
+
                          if ( this->timer == 0 )
                          {
-                              printf("%i, Lower was pressed %i!\n", this->key, this->getTime() ); 
-                              force = 127 ;
+                              // debounce
+
+                              return ;
                          }
                          else
                          {
-                              float start = this->timer;
-                              float end   = this->getTime();
+                              int start = this->timer;
+                              int end   = this->getTime();
 
-                              float diff = this->getTime() - this->timer; 
+                              int diff = this->getTime() - this->timer; 
 
-                              printf( "From %i to %i\n ", start, end );
-
-                              force = max( 0, 127 - diff / 10e6 * 700 ) ;
+                              // Add 5, determined from human testing
+                              force = 127 - round ( diff / TIME_UNIT ) + 5 ;
                          }
-//                         printf( "noteon 1 %i %i\n", this->key, force );
+                         printf( "noteon 1 %i %i\n", this->key, force );
                     }
                     else
-  ;//                       printf( "noteoff 1 %i \n", this->key ) ;
+                    {
+                         printf( "noteoff 1 %i \n", this->key ) ;
+                    }
 
 
+                    this->timer = 0;
                }
-               this->timer = 0;
           }/*}}}*/
 
 

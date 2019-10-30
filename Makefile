@@ -7,8 +7,12 @@ demo:
 	./piano | nc $(SYNTH_IP) 9800
 
 test: 
-	g++ -I. piano.c -o piano
+	g++ -g -I. piano.c -o piano
 	./piano 
+
+debug: 
+	g++ -g -I. piano.c -o piano
+	gdb ./piano 
 
 clean: 
 	$(RM) piano
