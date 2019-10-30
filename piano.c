@@ -13,6 +13,7 @@ int main() {
 
      //printf("reverb on\n");
      printf("gain 4\n");
+      printf("gain 1\n");
 //     piano->load('keyboard.map');
 
      try

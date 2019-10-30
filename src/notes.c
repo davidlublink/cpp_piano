@@ -4,6 +4,8 @@ class Notes
 {
      Note* buttons[8][8] ;
 
+     int last_ts ;
+
      public: 
 
      Notes()/*{{{*/
@@ -53,7 +55,13 @@ class Notes
 
      void set( int output, int input, int bit )/*{{{*/
      {
-          this->buttons[input][output]->set( input, output, bit );
+          int current_ts = 0;
+          if ( 0 < ( current_ts = this->buttons[input][output]->set( input, output, bit ) ) ) 
+          {
+               int diff = current_ts - this->last_ts;
+               
+               fprintf( stderr , "You should sleep %0.20f seconds\n", diff / 1000 ) ;
+          }
      }/*}}}*/
 
 }; 

@@ -60,7 +60,7 @@ class Note
                return time; 
           }/*}}}*/
 
-          void set( int x, int y, int value )/*{{{*/
+          int set( int x, int y, int value )/*{{{*/
           {
                if ( x == this->start[0] && y == this->start[1] )
                     return this->setUpper( value ) ;
@@ -72,7 +72,7 @@ class Note
 
       private:
 
-          void setUpper( int bit )/*{{{*/
+          int setUpper( int bit )/*{{{*/
           {
                if ( this->value[0] != bit )
                {
@@ -86,13 +86,17 @@ class Note
                     {
                          this->timer = 0;
                     }
+                    return this->timer ;
                }
+               return 0 ;
           }/*}}}*/
 
-          void setLower( int bit )/*{{{*/
+          int setLower( int bit )/*{{{*/
           {
                if ( this->value[1] != bit )
                {
+                    int end   = this->getTime();
+
                     this->value[1] = bit ;
 
                     if ( bit )
@@ -103,12 +107,11 @@ class Note
                          {
                               // debounce
 
-                              return ;
+                              return 0;
                          }
                          else
                          {
                               int start = this->timer;
-                              int end   = this->getTime();
 
                               int diff = this->getTime() - this->timer; 
 
@@ -124,7 +127,10 @@ class Note
 
 
                     this->timer = 0;
+                    return end ;
                }
+
+               return 0;
           }/*}}}*/
 
 
