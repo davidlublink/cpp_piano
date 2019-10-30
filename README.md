@@ -35,17 +35,11 @@ In the second terminal I run piano :
      
      ./piano | nc 127.0.0.1 9800
 
-With this running, you can here the piano from the synthesizer.     
-
+The piano can now be heard from the synthesizer, when combined with a proper and a speakers.
 
 Known issues
  * Code is not documented
- * Sounds like keyboard is being pounded
  * Only has 32 notes out of 88
  * The code was written for my specific setup
-
-
- === State of development ===
-
-
-
+ * No pedals
+ * No other features

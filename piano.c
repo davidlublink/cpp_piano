@@ -11,6 +11,7 @@ int main() {
 
      MCP23017* piano = new MCP23017( 1, 0x20 );
 
+     printf("reverb on\n");
 //     piano->load('keyboard.map');
 
      try
