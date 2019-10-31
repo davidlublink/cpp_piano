@@ -59,8 +59,6 @@ class Notes
           if ( 0 < ( current_ts = this->buttons[input][output]->set( input, output, bit ) ) ) 
           {
                int diff = current_ts - this->last_ts;
-               
-               fprintf( stderr , "You should sleep %0.20f seconds\n", diff / 1000 ) ;
           }
      }/*}}}*/
 

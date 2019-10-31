@@ -43,3 +43,4 @@ Known issues
  * The code was written for my specific setup
  * No pedals
  * No other features
+ * The processor on the raspberry pi ( 2011 ) is far to slow for fluidsynth.

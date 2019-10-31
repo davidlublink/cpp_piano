@@ -49,7 +49,7 @@ class MCP23017
 
                file = open(filename, O_RDWR);
                if (file < 0) {
-                    throw "unable to open i2c adapter";
+                    throw 0x06 ;
                }
 
                ioctl( file, I2C_SLAVE, address );
@@ -81,7 +81,7 @@ class MCP23017
                buf[0] = reg + bank;
 
                if (write(file, buf, 1) != 1) {
-                    throw "unable to request register";
+                    throw 0x07 ;
                }
 
                read( file, buf, 1 ) ;

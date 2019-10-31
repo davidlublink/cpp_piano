@@ -4,7 +4,7 @@ all: piano.c
 	g++ -I. piano.c -o piano
 demo: 
 	g++ -I. piano.c -o piano
-	./piano | nc $(SYNTH_IP) 9800
+	./piano | fluidsynth -a alsa /usr/share/sounds/sf2/FluidR3_GM.sf2
 
 test: 
 	g++ -g -I. piano.c -o piano
