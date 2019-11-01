@@ -4,7 +4,7 @@ all: piano.c
 	g++ -I. piano.c -o piano
 demo: 
 	g++ -I. piano.c -o piano
-	./piano | fluidsynth -a alsa /usr/share/sounds/sf2/FluidR3_GM.sf2
+	./piano | fluidsynth -a alsa -o audio.alsa.device=hw:0 /usr/share/sounds/sf2/FluidR3_GM.sf2 -c=2 -z=64
 
 test: 
 	g++ -g -I. piano.c -o piano

@@ -107,7 +107,7 @@ class Note
                          {
                               // debounce
 
-                              return 0;
+				 force = 127;
                          }
                          else
                          {
