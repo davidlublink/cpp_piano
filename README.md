@@ -1,5 +1,7 @@
 # A simple user-space driver for piano
 
+**This project has been abandoned, a general purpose computer ( like the Raspberry Pi ) can not scan the mcp23017 chips fast enough to have a responsive piano. It is possible if this was built as a kernel module *maybe* it would have worked better**
+
 Introduction
 
 This project aims to replace the OEM computer inside of a Roland 230 electronic piano with a general purpose computer to interpret signals from the keyboard and synthesize the appropriate sounds. I tried to write this in php, but it didn't work out because of the lack of read, write and ioctl. I put aside the PHP project and decided to write the adapter in C++ ( I wanted objects ).
